@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 
-// Copyright © 2012 - 2020 François Chabot
+// Copyright © 2012 - 2021 François Chabot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using System.Xml;
-using Be.Stateless.BizTalk.Resources.Transform;
+using Be.Stateless.BizTalk.Dummies.Transform;
 using Be.Stateless.BizTalk.Xml.Xsl;
 using Be.Stateless.IO;
 using Be.Stateless.Linq.Extensions;
@@ -50,9 +50,9 @@ namespace Be.Stateless.BizTalk.Xml
 		[Fact]
 		public void AggregatesInitializedXmlReaders()
 		{
-			var part1 = XmlReader.Create(new StringReader(PART_1), new XmlReaderSettings { CloseInput = true });
-			var part2 = XmlReader.Create(new StringReader(PART_2), new XmlReaderSettings { CloseInput = true });
-			var part3 = XmlReader.Create(new StringReader(PART_3), new XmlReaderSettings { CloseInput = true });
+			var part1 = XmlReader.Create(new StringReader(PART_1), new() { CloseInput = true });
+			var part2 = XmlReader.Create(new StringReader(PART_2), new() { CloseInput = true });
+			var part3 = XmlReader.Create(new StringReader(PART_3), new() { CloseInput = true });
 
 			part1.MoveToContent();
 			part2.MoveToContent();
@@ -68,9 +68,9 @@ namespace Be.Stateless.BizTalk.Xml
 		[Fact]
 		public void AggregatesUninitializedXmlReaders()
 		{
-			var part1 = XmlReader.Create(new StringReader(PART_1), new XmlReaderSettings { CloseInput = true });
-			var part2 = XmlReader.Create(new StringReader(PART_2), new XmlReaderSettings { CloseInput = true });
-			var part3 = XmlReader.Create(new StringReader(PART_3), new XmlReaderSettings { CloseInput = true });
+			var part1 = XmlReader.Create(new StringReader(PART_1), new() { CloseInput = true });
+			var part2 = XmlReader.Create(new StringReader(PART_2), new() { CloseInput = true });
+			var part3 = XmlReader.Create(new StringReader(PART_3), new() { CloseInput = true });
 
 			using (var composite = CompositeXmlReader.Create(new[] { part1, part2, part3 }))
 			{
@@ -83,9 +83,9 @@ namespace Be.Stateless.BizTalk.Xml
 		[SuppressMessage("ReSharper", "AccessToDisposedClosure")]
 		public void CompoundXmlReadersShareXmlNameTable()
 		{
-			var part1 = XmlReader.Create(new StringReader(PART_1), new XmlReaderSettings { CloseInput = true });
-			var part2 = XmlReader.Create(new StringReader(PART_2), new XmlReaderSettings { CloseInput = true });
-			var part3 = XmlReader.Create(new StringReader(PART_3), new XmlReaderSettings { CloseInput = true });
+			var part1 = XmlReader.Create(new StringReader(PART_1), new() { CloseInput = true });
+			var part2 = XmlReader.Create(new StringReader(PART_2), new() { CloseInput = true });
+			var part3 = XmlReader.Create(new StringReader(PART_3), new() { CloseInput = true });
 
 			using (var composite = CompositeXmlReader.Create(new[] { part1, part2, part3 }))
 			{
@@ -105,7 +105,7 @@ namespace Be.Stateless.BizTalk.Xml
 			var mock2 = new Mock<MemoryStream>(MockBehavior.Default, _part2) { CallBase = true };
 			var mock3 = new Mock<MemoryStream>(MockBehavior.Default, _part3) { CallBase = true };
 
-			using (CompositeXmlReader.Create(new[] { mock1.Object, mock2.Object, mock3.Object }, new XmlReaderSettings { CloseInput = true })) { }
+			using (CompositeXmlReader.Create(new[] { mock1.Object, mock2.Object, mock3.Object }, new() { CloseInput = true })) { }
 
 			mock1.Verify(s => s.Close());
 			mock2.Verify(s => s.Close());
@@ -120,11 +120,11 @@ namespace Be.Stateless.BizTalk.Xml
 			using (var part3 = new StringStream(PART_3))
 			using (var composite = CompositeXmlReader.Create(new[] { part1, part2, part3 }))
 			{
-				var xslTransformDescriptor = new XslCompiledTransformDescriptor(new XslCompiledTransformDescriptorBuilder(typeof(IdentityTransform)));
+				var xslTransformDescriptor = new XslCompiledTransformDescriptor(new(typeof(IdentityTransform)));
 				var builder = new StringBuilder();
 				using (var writer = XmlWriter.Create(builder))
 				{
-					xslTransformDescriptor.XslCompiledTransform.Transform(composite, xslTransformDescriptor.Arguments, writer);
+					xslTransformDescriptor.XslCompiledTransform.Transform(composite, xslTransformDescriptor.Arguments, writer!);
 				}
 				builder.GetReaderAtContent().ReadOuterXml().Should().Be(EXPECTED);
 			}
@@ -138,11 +138,11 @@ namespace Be.Stateless.BizTalk.Xml
 			using (var part3 = new StringStream(PART_3))
 			using (var composite = CompositeXmlReader.Create(new[] { XmlReader.Create(part1), XmlReader.Create(part2), XmlReader.Create(part3) }))
 			{
-				var xslTransformDescriptor = new XslCompiledTransformDescriptor(new XslCompiledTransformDescriptorBuilder(typeof(IdentityTransform)));
+				var xslTransformDescriptor = new XslCompiledTransformDescriptor(new(typeof(IdentityTransform)));
 				var builder = new StringBuilder();
 				using (var writer = XmlWriter.Create(builder))
 				{
-					xslTransformDescriptor.XslCompiledTransform.Transform(composite, xslTransformDescriptor.Arguments, writer);
+					xslTransformDescriptor.XslCompiledTransform.Transform(composite, xslTransformDescriptor.Arguments, writer!);
 				}
 				builder.GetReaderAtContent().ReadOuterXml().Should().Be(EXPECTED);
 			}

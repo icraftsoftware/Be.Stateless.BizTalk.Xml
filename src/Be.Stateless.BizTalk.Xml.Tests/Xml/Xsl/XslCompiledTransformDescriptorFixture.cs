@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 
-// Copyright © 2012 - 2020 François Chabot
+// Copyright © 2012 - 2021 François Chabot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 #endregion
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using Be.Stateless.BizTalk.ContextProperties;
-using Be.Stateless.BizTalk.Resources.Transform;
+using Be.Stateless.BizTalk.Dummies.Transform;
 using FluentAssertions;
 using Xunit;
+using static FluentAssertions.FluentActions;
 
 namespace Be.Stateless.BizTalk.Xml.Xsl
 {
@@ -30,9 +30,9 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 		[Fact]
 		public void DetectsMessageContextRequirement()
 		{
-			var descriptor = new XslCompiledTransformDescriptor(new XslCompiledTransformDescriptorBuilder(typeof(CompoundContextMapTransform)));
+			var descriptor = new XslCompiledTransformDescriptor(new(typeof(CompoundContextMapTransform)));
 			descriptor.ExtensionRequirements.Should().Be(ExtensionRequirements.MessageContext);
-			descriptor.NamespaceResolver.LookupNamespace("bf").Should().Be(BizTalkFactoryProperties.EnvironmentTag.Namespace);
+			descriptor.NamespaceResolver.LookupNamespace("bf").Should().Be(BizTalkFactoryProperties.ContextBuilderTypeName.Namespace);
 			descriptor.NamespaceResolver.LookupNamespace("bts").Should().Be(BtsProperties.ActualRetryCount.Namespace);
 			descriptor.NamespaceResolver.LookupNamespace("tp").Should().BeNull();
 		}
@@ -40,7 +40,7 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 		[Fact]
 		public void DetectsMessageContextRequirementAbsence()
 		{
-			var descriptor = new XslCompiledTransformDescriptor(new XslCompiledTransformDescriptorBuilder(typeof(IdentityTransform)));
+			var descriptor = new XslCompiledTransformDescriptor(new(typeof(IdentityTransform)));
 			descriptor.ExtensionRequirements.Should().Be(ExtensionRequirements.None);
 			descriptor.NamespaceResolver.Should().BeNull();
 		}
@@ -49,8 +49,7 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 		[SuppressMessage("ReSharper", "ObjectCreationAsStatement")]
 		public void ImplicitlyReliesOnXslMapUrlResolver()
 		{
-			Action act = () => new XslCompiledTransformDescriptor(new XslCompiledTransformDescriptorBuilder(typeof(CompoundMapTransform)));
-			act.Should().NotThrow();
+			Invoking(() => new XslCompiledTransformDescriptor(new(typeof(CompoundMapTransform)))).Should().NotThrow();
 		}
 	}
 }

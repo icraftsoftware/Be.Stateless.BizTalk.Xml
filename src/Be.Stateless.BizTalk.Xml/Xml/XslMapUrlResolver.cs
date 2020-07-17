@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 
-// Copyright © 2012 - 2020 François Chabot
+// Copyright © 2012 - 2021 François Chabot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -77,6 +77,8 @@ namespace Be.Stateless.BizTalk.Xml
 		/// One of <see cref="Stream"/>, <see cref="XmlReader"/>, or <see cref="IXPathNavigable"/>.
 		/// </returns>
 		[SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
+		[SuppressMessage("ReSharper", "InvertIf")]
+		[SuppressMessage("ReSharper", "ConvertIfStatementToSwitchStatement")]
 		public override object GetEntity(Uri absoluteUri, string role, Type ofObjectToReturn)
 		{
 			if (absoluteUri == null) throw new ArgumentNullException(nameof(absoluteUri));
@@ -89,7 +91,7 @@ namespace Be.Stateless.BizTalk.Xml
 					var transform = (TransformBase) Activator.CreateInstance(type);
 					// http://stackoverflow.com/questions/11864564/xslcompiledtransform-and-custom-xmlurlresolver-an-entry-with-the-same-key-alre
 					var baseUri = absoluteUri.GetLeftPart(UriPartial.Authority) + "/" + type.FullName;
-					using (var reader = XmlReader.Create(new StringReader(transform.XmlContent), new XmlReaderSettings { XmlResolver = null }, baseUri))
+					using (var reader = XmlReader.Create(new StringReader(transform.XmlContent), new() { XmlResolver = null }, baseUri))
 					{
 						// http://stackoverflow.com/questions/1440023/can-i-assign-a-baseuri-to-an-xdocument
 						var xDocument = XDocument.Load(reader, LoadOptions.SetBaseUri);
@@ -123,6 +125,8 @@ namespace Be.Stateless.BizTalk.Xml
 		/// <returns>
 		/// The absolute URI or null if the relative URI cannot be resolved.
 		/// </returns>
+		[SuppressMessage("ReSharper", "InvertIf")]
+		[SuppressMessage("ReSharper", "ConvertIfStatementToSwitchStatement")]
 		public override Uri ResolveUri(Uri baseUri, string relativeUri)
 		{
 			var uri = new Uri(relativeUri, UriKind.RelativeOrAbsolute);
@@ -139,13 +143,10 @@ namespace Be.Stateless.BizTalk.Xml
 		[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
 		protected Type ReferenceType { get; }
 
-		// ReSharper disable once MemberCanBePrivate.Global, internals are visible to BizTalk.Unit
-		internal const string MAP_SCHEME = "map";
-
-		// ReSharper disable once MemberCanBePrivate.Global, internals are visible to BizTalk.Unit
-		internal const string RESOURCE_HOST = "resource";
-
-		// ReSharper disable once MemberCanBePrivate.Global, internals are visible to BizTalk.Unit
-		internal const string TYPE_HOST = "type";
+		// ReSharper disable MemberCanBePrivate.Global
+		protected const string MAP_SCHEME = "map";
+		protected const string RESOURCE_HOST = "resource";
+		protected const string TYPE_HOST = "type";
+		// ReSharper restore MemberCanBePrivate.Global
 	}
 }

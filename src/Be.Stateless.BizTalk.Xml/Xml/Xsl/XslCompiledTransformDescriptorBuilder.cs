@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 
-// Copyright © 2012 - 2020 François Chabot
+// Copyright © 2012 - 2021 François Chabot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,7 +22,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Xsl;
-using Be.Stateless.BizTalk.Schemas;
+using Be.Stateless.BizTalk.Namespaces;
 using Be.Stateless.BizTalk.Xml.Xsl.Extensions;
 using Be.Stateless.Extensions;
 using Be.Stateless.Linq.Extensions;
@@ -70,7 +70,6 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 			return nsm;
 		}
 
-		[SuppressMessage("Security", "CA3076:Insecure XSLT script processing.")]
 		public virtual XslCompiledTransform BuildXslCompiledTransform()
 		{
 			var xslCompiledTransform = new XslCompiledTransform();
@@ -80,12 +79,12 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 
 		public virtual Stateless.Xml.Xsl.XsltArgumentList BuildXsltArgumentList()
 		{
-			return new Stateless.Xml.Xsl.XsltArgumentList(_transformBase.TransformArgs);
+			return new(_transformBase.TransformArgs);
 		}
 
 		private XPathNavigator BuildNavigator()
 		{
-			using (var stringReader = XmlReader.Create(new StringReader(_transformBase.XmlContent), new XmlReaderSettings { XmlResolver = null }))
+			using (var stringReader = XmlReader.Create(new StringReader(_transformBase.XmlContent), new() { XmlResolver = null }))
 			{
 				var navigator = new XPathDocument(stringReader).CreateNavigator();
 				navigator.MoveToFollowing(XPathNodeType.Element);
