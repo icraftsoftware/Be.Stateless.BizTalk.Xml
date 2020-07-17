@@ -16,18 +16,25 @@
 
 #endregion
 
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.XLANGs.BaseTypes;
 
-namespace Be.Stateless.BizTalk.Xml.Xsl
+namespace Be.Stateless.BizTalk.Resources.Transform
 {
 	[SchemaReference(@"Be.Stateless.BizTalk.Schemas.Xml.Any", typeof(Schemas.Xml.Any))]
-	internal sealed class CompoundMapTransform : TransformBase
+	internal sealed class CompoundContextMapTransform : TransformBase
 	{
-		static CompoundMapTransform()
+		[SuppressMessage("ReSharper", "StringLiteralTypo")]
+		static CompoundContextMapTransform()
 		{
-			_xmlContent = @"<xsl:stylesheet version='1.0' xmlns:xsl='http://www.w3.org/1999/XSL/Transform'>
-	<xsl:import href='map://type/Be.Stateless.BizTalk.Xml.Xsl.CompoundContextMapTransform, Be.Stateless.BizTalk.Xml.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3707daa0b119fc14' />
-	<xsl:template match='two'><second><xsl:value-of select='text()'/></second></xsl:template>
+			_xmlContent = @"<xsl:stylesheet version='1.0' xmlns:xsl='http://www.w3.org/1999/XSL/Transform'
+	xmlns:ctxt='urn:extensions.stateless.be:biztalk:message:context:2012:12'
+	xmlns:bf='urn:schemas.stateless.be:biztalk:properties:system:2012:04'
+	xmlns:bts='http://schemas.microsoft.com/BizTalk/2003/system-properties'
+	exclude-result-prefixes='ctxt bf bts'>
+	<xsl:variable name='environmentTag' select=""ctxt:Read('bf:EnvironmentTag')""/>
+	<xsl:variable name='operation' select=""ctxt:Read('bts:Operation')""/>
+	<xsl:template match='one'><first><xsl:value-of select='text()'/></first></xsl:template>
 </xsl:stylesheet>";
 		}
 

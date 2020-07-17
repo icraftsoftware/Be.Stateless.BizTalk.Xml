@@ -33,8 +33,8 @@ namespace Be.Stateless.BizTalk.Xml
 		public void ResolveImportedAndIncludedEmbeddedXslt()
 		{
 			const string compositeMapResourceTransform = @"<xsl:stylesheet version='1.0' xmlns:xsl='http://www.w3.org/1999/XSL/Transform'>
-	<xsl:import href='map://resource/Data.Imported.xsl'/>
-	<xsl:include href='map://resource/Be.Stateless.BizTalk.Xml.Data.Included.xsl'/>
+	<xsl:import href='map://resource/Be.Stateless.BizTalk.Resources.Xsl.Imported.xsl'/>
+	<xsl:include href='map://resource/Be.Stateless.BizTalk.Resources.Xsl.Included.xsl'/>
 	<xsl:template match='*[3]'>Matched by Composite.xsl</xsl:template>
 </xsl:stylesheet>";
 			using (var reader = XmlReader.Create(new StringStream(compositeMapResourceTransform)))
@@ -49,7 +49,7 @@ namespace Be.Stateless.BizTalk.Xml
 		public void ResolveImportedAndIncludedMapTypes()
 		{
 			const string compositeMapTypeTransform = @"<xsl:stylesheet version='1.0' xmlns:xsl='http://www.w3.org/1999/XSL/Transform'>
-	<xsl:import href='map://type/Be.Stateless.BizTalk.Xml.Xsl.CompoundMapTransform, Be.Stateless.BizTalk.Xml.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3707daa0b119fc14'/>
+	<xsl:import href='map://type/Be.Stateless.BizTalk.Resources.Transform.CompoundMapTransform, Be.Stateless.BizTalk.Xml.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3707daa0b119fc14'/>
 	<xsl:include href='map://type/Be.Stateless.BizTalk.Resources.Transform.IdentityTransform, Be.Stateless.BizTalk.Xml.Tests, Version=2.0.0.0, Culture=neutral, PublicKeyToken=3707daa0b119fc14'/>
 	<xsl:variable name='attachment-fragment'>
 		<Attachment/>

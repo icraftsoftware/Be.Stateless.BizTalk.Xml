@@ -8,13 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Xml\Data\Imported.xsl" />
-    <None Remove="Xml\Data\Included.xsl" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="Xml\Data\Imported.xsl" />
-    <EmbeddedResource Include="Xml\Data\Included.xsl" />
+    <EmbeddedResource Include="Resources\Xsl\Imported.xsl" />
+    <EmbeddedResource Include="Resources\Xsl\Included.xsl" />
   </ItemGroup>
 
   <ItemGroup>
