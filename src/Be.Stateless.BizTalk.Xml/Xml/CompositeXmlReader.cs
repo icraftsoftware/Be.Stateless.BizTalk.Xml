@@ -171,46 +171,49 @@ namespace Be.Stateless.BizTalk.Xml
 
 		public override bool Read()
 		{
-			// determine both next _state and InnerReader, and always call InnerReader.Read() once
-			switch (_state)
+			while (true)
 			{
-				case CompositeXmlReaderState.RootAggregateOpeningTag:
-					_state = CompositeXmlReaderState.MessagePartWrapperOpeningTag;
-					return InnerReader.Read();
+				// determine both next _state and InnerReader, and always call InnerReader.Read() once
+				switch (_state)
+				{
+					case CompositeXmlReaderState.RootAggregateOpeningTag:
+						_state = CompositeXmlReaderState.MessagePartWrapperOpeningTag;
+						return InnerReader.Read();
 
-				case CompositeXmlReaderState.MessagePartWrapperOpeningTag:
-					_state = CompositeXmlReaderState.MessagePartDocumentElement;
-					return InnerReader.Read();
+					case CompositeXmlReaderState.MessagePartWrapperOpeningTag:
+						_state = CompositeXmlReaderState.MessagePartDocumentElement;
+						return InnerReader.Read();
 
-				case CompositeXmlReaderState.MessagePartDocumentElement:
-					_state = CompositeXmlReaderState.MessagePartContent;
-					InnerReader = _readers[_currentMessagePartIndex];
-					// read along but skip any XmlDeclaration
-					while (InnerReader.Read())
-					{
-						if (InnerReader.NodeType != XmlNodeType.XmlDeclaration) return true;
-					}
-					// switch to next state if fall through
-					return Read();
+					case CompositeXmlReaderState.MessagePartDocumentElement:
+						_state = CompositeXmlReaderState.MessagePartContent;
+						InnerReader = _readers[_currentMessagePartIndex];
+						// read along but skip any XmlDeclaration
+						while (InnerReader.Read())
+						{
+							if (InnerReader.NodeType != XmlNodeType.XmlDeclaration) return true;
+						}
+						// switch to next state if fall through
+						continue; // tail recursion
 
-				case CompositeXmlReaderState.MessagePartContent:
-					if (InnerReader.Read()) return true;
-					// switch to next state if fall through
-					_state = CompositeXmlReaderState.MessagePartWrapperClosingTag;
-					InnerReader = _outlineReader;
-					return Read();
+					case CompositeXmlReaderState.MessagePartContent:
+						if (InnerReader.Read()) return true;
+						// switch to next state if fall through
+						_state = CompositeXmlReaderState.MessagePartWrapperClosingTag;
+						InnerReader = _outlineReader;
+						continue; // tail recursion
 
-				case CompositeXmlReaderState.MessagePartWrapperClosingTag:
-					_state = ++_currentMessagePartIndex < _readers.Length
-						? CompositeXmlReaderState.MessagePartWrapperOpeningTag
-						: CompositeXmlReaderState.RootAggregateClosingTag;
-					return InnerReader.Read();
+					case CompositeXmlReaderState.MessagePartWrapperClosingTag:
+						_state = ++_currentMessagePartIndex < _readers.Length
+							? CompositeXmlReaderState.MessagePartWrapperOpeningTag
+							: CompositeXmlReaderState.RootAggregateClosingTag;
+						return InnerReader.Read();
 
-				case CompositeXmlReaderState.RootAggregateClosingTag:
-					return InnerReader.Read();
+					case CompositeXmlReaderState.RootAggregateClosingTag:
+						return InnerReader.Read();
 
-				default:
-					throw new InvalidOperationException($"Unexpected state value: {_state}.");
+					default:
+						throw new InvalidOperationException($"Unexpected state value: {_state}.");
+				}
 			}
 		}
 

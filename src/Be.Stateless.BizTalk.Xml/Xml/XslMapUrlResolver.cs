@@ -77,6 +77,8 @@ namespace Be.Stateless.BizTalk.Xml
 		/// One of <see cref="Stream"/>, <see cref="XmlReader"/>, or <see cref="IXPathNavigable"/>.
 		/// </returns>
 		[SuppressMessage("ReSharper", "AssignNullToNotNullAttribute")]
+		[SuppressMessage("ReSharper", "InvertIf")]
+		[SuppressMessage("ReSharper", "ConvertIfStatementToSwitchStatement")]
 		public override object GetEntity(Uri absoluteUri, string role, Type ofObjectToReturn)
 		{
 			if (absoluteUri == null) throw new ArgumentNullException(nameof(absoluteUri));
@@ -123,6 +125,8 @@ namespace Be.Stateless.BizTalk.Xml
 		/// <returns>
 		/// The absolute URI or null if the relative URI cannot be resolved.
 		/// </returns>
+		[SuppressMessage("ReSharper", "InvertIf")]
+		[SuppressMessage("ReSharper", "ConvertIfStatementToSwitchStatement")]
 		public override Uri ResolveUri(Uri baseUri, string relativeUri)
 		{
 			var uri = new Uri(relativeUri, UriKind.RelativeOrAbsolute);
@@ -139,13 +143,13 @@ namespace Be.Stateless.BizTalk.Xml
 		[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
 		protected Type ReferenceType { get; }
 
-		// ReSharper disable once MemberCanBePrivate.Global, internals are visible to BizTalk.Unit
-		internal const string MAP_SCHEME = "map";
+		// ReSharper disable once MemberCanBePrivate.Global
+		protected const string MAP_SCHEME = "map";
 
-		// ReSharper disable once MemberCanBePrivate.Global, internals are visible to BizTalk.Unit
-		internal const string RESOURCE_HOST = "resource";
+		// ReSharper disable once MemberCanBePrivate.Global
+		protected const string RESOURCE_HOST = "resource";
 
-		// ReSharper disable once MemberCanBePrivate.Global, internals are visible to BizTalk.Unit
-		internal const string TYPE_HOST = "type";
+		// ReSharper disable once MemberCanBePrivate.Global
+		protected const string TYPE_HOST = "type";
 	}
 }
