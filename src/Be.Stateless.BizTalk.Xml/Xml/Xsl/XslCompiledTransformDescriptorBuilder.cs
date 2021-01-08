@@ -22,7 +22,7 @@ using System.IO;
 using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Xsl;
-using Be.Stateless.BizTalk.Schemas;
+using Be.Stateless.BizTalk.Namespaces;
 using Be.Stateless.BizTalk.Xml.Xsl.Extensions;
 using Be.Stateless.Extensions;
 using Be.Stateless.Linq.Extensions;

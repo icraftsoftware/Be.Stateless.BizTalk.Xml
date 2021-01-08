@@ -20,7 +20,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
 using System.Xml;
-using Be.Stateless.BizTalk.Resources.Transform;
+using Be.Stateless.BizTalk.Dummies.Transform;
 using Be.Stateless.BizTalk.Xml.Xsl;
 using Be.Stateless.IO;
 using Be.Stateless.Linq.Extensions;
@@ -124,7 +124,7 @@ namespace Be.Stateless.BizTalk.Xml
 				var builder = new StringBuilder();
 				using (var writer = XmlWriter.Create(builder))
 				{
-					xslTransformDescriptor.XslCompiledTransform.Transform(composite, xslTransformDescriptor.Arguments, writer);
+					xslTransformDescriptor.XslCompiledTransform.Transform(composite, xslTransformDescriptor.Arguments, writer!);
 				}
 				builder.GetReaderAtContent().ReadOuterXml().Should().Be(EXPECTED);
 			}
@@ -142,7 +142,7 @@ namespace Be.Stateless.BizTalk.Xml
 				var builder = new StringBuilder();
 				using (var writer = XmlWriter.Create(builder))
 				{
-					xslTransformDescriptor.XslCompiledTransform.Transform(composite, xslTransformDescriptor.Arguments, writer);
+					xslTransformDescriptor.XslCompiledTransform.Transform(composite, xslTransformDescriptor.Arguments, writer!);
 				}
 				builder.GetReaderAtContent().ReadOuterXml().Should().Be(EXPECTED);
 			}

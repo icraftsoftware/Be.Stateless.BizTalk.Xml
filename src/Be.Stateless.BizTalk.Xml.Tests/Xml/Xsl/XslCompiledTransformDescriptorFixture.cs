@@ -19,7 +19,7 @@
 using System;
 using System.Diagnostics.CodeAnalysis;
 using Be.Stateless.BizTalk.ContextProperties;
-using Be.Stateless.BizTalk.Resources.Transform;
+using Be.Stateless.BizTalk.Dummies.Transform;
 using FluentAssertions;
 using Xunit;
 
@@ -32,7 +32,7 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 		{
 			var descriptor = new XslCompiledTransformDescriptor(new XslCompiledTransformDescriptorBuilder(typeof(CompoundContextMapTransform)));
 			descriptor.ExtensionRequirements.Should().Be(ExtensionRequirements.MessageContext);
-			descriptor.NamespaceResolver.LookupNamespace("bf").Should().Be(BizTalkFactoryProperties.EnvironmentTag.Namespace);
+			descriptor.NamespaceResolver.LookupNamespace("bf").Should().Be(BizTalkFactoryProperties.ContextBuilderTypeName.Namespace);
 			descriptor.NamespaceResolver.LookupNamespace("bts").Should().Be(BtsProperties.ActualRetryCount.Namespace);
 			descriptor.NamespaceResolver.LookupNamespace("tp").Should().BeNull();
 		}

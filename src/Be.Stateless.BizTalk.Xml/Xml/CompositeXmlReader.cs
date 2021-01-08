@@ -24,7 +24,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
-using Be.Stateless.BizTalk.Schemas;
+using Be.Stateless.BizTalk.Namespaces;
 using Be.Stateless.Extensions;
 using Be.Stateless.Linq.Extensions;
 using Be.Stateless.Xml;
@@ -142,7 +142,7 @@ namespace Be.Stateless.BizTalk.Xml
 		private static XmlReader CreateOutline(int parts, XmlReaderSettings settings)
 		{
 			var builder = new StringBuilder(1024);
-			builder.Append($"<agg:Root xmlns:agg=\"{SchemaNamespaces.BizTalkAggregate}\">");
+			builder.Append($"<agg:Root xmlns:agg=\"{XmlSchemaNamespaces.BizTalkAggregate}\">");
 			for (var i = 0; i < parts; i++)
 			{
 				builder.AppendFormat(CultureInfo.InvariantCulture, "<agg:InputMessagePart_{0}></agg:InputMessagePart_{0}>", i);

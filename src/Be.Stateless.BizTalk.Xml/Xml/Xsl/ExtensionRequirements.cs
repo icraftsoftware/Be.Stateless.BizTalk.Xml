@@ -19,7 +19,7 @@
 using System;
 using System.Xml.Xsl;
 using Be.Stateless.BizTalk.Message.ExtensionObjects;
-using Be.Stateless.BizTalk.Schemas;
+using Be.Stateless.BizTalk.Namespaces;
 
 namespace Be.Stateless.BizTalk.Xml.Xsl
 {
