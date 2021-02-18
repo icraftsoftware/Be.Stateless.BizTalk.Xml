@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 
-// Copyright © 2012 - 2020 François Chabot
+// Copyright © 2012 - 2021 François Chabot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,12 +16,12 @@
 
 #endregion
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using Be.Stateless.BizTalk.ContextProperties;
 using Be.Stateless.BizTalk.Dummies.Transform;
 using FluentAssertions;
 using Xunit;
+using static FluentAssertions.FluentActions;
 
 namespace Be.Stateless.BizTalk.Xml.Xsl
 {
@@ -49,8 +49,7 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 		[SuppressMessage("ReSharper", "ObjectCreationAsStatement")]
 		public void ImplicitlyReliesOnXslMapUrlResolver()
 		{
-			Action act = () => new XslCompiledTransformDescriptor(new XslCompiledTransformDescriptorBuilder(typeof(CompoundMapTransform)));
-			act.Should().NotThrow();
+			Invoking(() => new XslCompiledTransformDescriptor(new XslCompiledTransformDescriptorBuilder(typeof(CompoundMapTransform)))).Should().NotThrow();
 		}
 	}
 }

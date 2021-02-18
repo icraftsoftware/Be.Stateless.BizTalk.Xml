@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 
-// Copyright © 2012 - 2020 François Chabot
+// Copyright © 2012 - 2021 François Chabot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,13 +16,13 @@
 
 #endregion
 
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Xml;
 using System.Xml.Xsl;
 using Be.Stateless.IO;
 using FluentAssertions;
 using Xunit;
+using static FluentAssertions.FluentActions;
 
 namespace Be.Stateless.BizTalk.Xml
 {
@@ -39,8 +39,8 @@ namespace Be.Stateless.BizTalk.Xml
 </xsl:stylesheet>";
 			using (var reader = XmlReader.Create(new StringStream(compositeMapResourceTransform)))
 			{
-				Action act = () => new XslCompiledTransform().Load(reader, XsltSettings.TrustedXslt, new XslMapUrlResolver(typeof(XslMapUrlResolverFixture)));
-				act.Should().NotThrow();
+				Invoking(() => new XslCompiledTransform().Load(reader, XsltSettings.TrustedXslt, new XslMapUrlResolver(typeof(XslMapUrlResolverFixture))))
+					.Should().NotThrow();
 			}
 		}
 
@@ -58,8 +58,8 @@ namespace Be.Stateless.BizTalk.Xml
 </xsl:stylesheet>";
 			using (var reader = XmlReader.Create(new StringStream(compositeMapTypeTransform)))
 			{
-				Action act = () => new XslCompiledTransform().Load(reader, XsltSettings.TrustedXslt, new XslMapUrlResolver(typeof(XslMapUrlResolverFixture)));
-				act.Should().NotThrow();
+				Invoking(() => new XslCompiledTransform().Load(reader, XsltSettings.TrustedXslt, new XslMapUrlResolver(typeof(XslMapUrlResolverFixture))))
+					.Should().NotThrow();
 			}
 		}
 	}
