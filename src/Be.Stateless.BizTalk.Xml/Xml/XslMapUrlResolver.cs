@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 
-// Copyright © 2012 - 2020 François Chabot
+// Copyright © 2012 - 2021 François Chabot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -91,7 +91,7 @@ namespace Be.Stateless.BizTalk.Xml
 					var transform = (TransformBase) Activator.CreateInstance(type);
 					// http://stackoverflow.com/questions/11864564/xslcompiledtransform-and-custom-xmlurlresolver-an-entry-with-the-same-key-alre
 					var baseUri = absoluteUri.GetLeftPart(UriPartial.Authority) + "/" + type.FullName;
-					using (var reader = XmlReader.Create(new StringReader(transform.XmlContent), new XmlReaderSettings { XmlResolver = null }, baseUri))
+					using (var reader = XmlReader.Create(new StringReader(transform.XmlContent), new() { XmlResolver = null }, baseUri))
 					{
 						// http://stackoverflow.com/questions/1440023/can-i-assign-a-baseuri-to-an-xdocument
 						var xDocument = XDocument.Load(reader, LoadOptions.SetBaseUri);

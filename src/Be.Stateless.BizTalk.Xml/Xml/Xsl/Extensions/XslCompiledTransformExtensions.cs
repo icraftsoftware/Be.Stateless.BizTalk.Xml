@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 
-// Copyright © 2012 - 2020 François Chabot
+// Copyright © 2012 - 2021 François Chabot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -46,7 +46,7 @@ namespace Be.Stateless.BizTalk.Xml.Xsl.Extensions
 		/// </param>
 		internal static void Transform(this XslCompiledTransform @this, Stream stream, XsltArgumentList arguments, XmlWriter writer)
 		{
-			using (var xmlReader = XmlReader.Create(stream, new XmlReaderSettings { CloseInput = true, XmlResolver = null }))
+			using (var xmlReader = XmlReader.Create(stream, new() { CloseInput = true, XmlResolver = null }))
 			{
 				@this.Transform(xmlReader, arguments, writer);
 			}
@@ -72,7 +72,7 @@ namespace Be.Stateless.BizTalk.Xml.Xsl.Extensions
 		/// <seealso cref="CompositeXmlReader"/>
 		internal static void Transform(this XslCompiledTransform @this, IEnumerable<Stream> streams, XsltArgumentList arguments, XmlWriter writer)
 		{
-			using (var xmlReader = CompositeXmlReader.Create(streams, new XmlReaderSettings { CloseInput = true, XmlResolver = null }))
+			using (var xmlReader = CompositeXmlReader.Create(streams, new() { CloseInput = true, XmlResolver = null }))
 			{
 				@this.Transform(xmlReader, arguments, writer);
 			}

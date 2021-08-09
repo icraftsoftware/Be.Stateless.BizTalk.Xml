@@ -30,7 +30,7 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 		[Fact]
 		public void DetectsMessageContextRequirement()
 		{
-			var descriptor = new XslCompiledTransformDescriptor(new XslCompiledTransformDescriptorBuilder(typeof(CompoundContextMapTransform)));
+			var descriptor = new XslCompiledTransformDescriptor(new(typeof(CompoundContextMapTransform)));
 			descriptor.ExtensionRequirements.Should().Be(ExtensionRequirements.MessageContext);
 			descriptor.NamespaceResolver.LookupNamespace("bf").Should().Be(BizTalkFactoryProperties.ContextBuilderTypeName.Namespace);
 			descriptor.NamespaceResolver.LookupNamespace("bts").Should().Be(BtsProperties.ActualRetryCount.Namespace);
@@ -40,7 +40,7 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 		[Fact]
 		public void DetectsMessageContextRequirementAbsence()
 		{
-			var descriptor = new XslCompiledTransformDescriptor(new XslCompiledTransformDescriptorBuilder(typeof(IdentityTransform)));
+			var descriptor = new XslCompiledTransformDescriptor(new(typeof(IdentityTransform)));
 			descriptor.ExtensionRequirements.Should().Be(ExtensionRequirements.None);
 			descriptor.NamespaceResolver.Should().BeNull();
 		}
@@ -49,7 +49,7 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 		[SuppressMessage("ReSharper", "ObjectCreationAsStatement")]
 		public void ImplicitlyReliesOnXslMapUrlResolver()
 		{
-			Invoking(() => new XslCompiledTransformDescriptor(new XslCompiledTransformDescriptorBuilder(typeof(CompoundMapTransform)))).Should().NotThrow();
+			Invoking(() => new XslCompiledTransformDescriptor(new(typeof(CompoundMapTransform)))).Should().NotThrow();
 		}
 	}
 }

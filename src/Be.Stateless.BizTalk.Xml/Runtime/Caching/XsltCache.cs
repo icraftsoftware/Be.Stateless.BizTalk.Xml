@@ -19,6 +19,7 @@
 using System;
 using System.Xml.Xsl;
 using Be.Stateless.BizTalk.Xml.Xsl;
+using Be.Stateless.Runtime.Caching;
 using Microsoft.XLANGs.BaseTypes;
 
 namespace Be.Stateless.BizTalk.Runtime.Caching
@@ -39,6 +40,6 @@ namespace Be.Stateless.BizTalk.Runtime.Caching
 		/// <summary>
 		/// Create the singleton <see cref="XsltCache"/> instance.
 		/// </summary>
-		private XsltCache() : base(key => key.AssemblyQualifiedName, key => new XslCompiledTransformDescriptor(new XslCompiledTransformDescriptorBuilder(key))) { }
+		private XsltCache() : base(key => key.AssemblyQualifiedName, key => new(new(key))) { }
 	}
 }

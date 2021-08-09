@@ -85,7 +85,7 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 
 		private XPathNavigator BuildNavigator()
 		{
-			using (var stringReader = XmlReader.Create(new StringReader(_transformBase.XmlContent), new XmlReaderSettings { XmlResolver = null }))
+			using (var stringReader = XmlReader.Create(new StringReader(_transformBase.XmlContent), new() { XmlResolver = null }))
 			{
 				var navigator = new XPathDocument(stringReader).CreateNavigator();
 				navigator.MoveToFollowing(XPathNodeType.Element);
