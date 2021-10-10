@@ -70,7 +70,6 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 			return nsm;
 		}
 
-		[SuppressMessage("Security", "CA3076:Insecure XSLT script processing.")]
 		public virtual XslCompiledTransform BuildXslCompiledTransform()
 		{
 			var xslCompiledTransform = new XslCompiledTransform();

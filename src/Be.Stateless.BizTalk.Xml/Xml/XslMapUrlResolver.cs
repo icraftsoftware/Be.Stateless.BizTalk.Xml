@@ -143,16 +143,10 @@ namespace Be.Stateless.BizTalk.Xml
 		[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
 		protected Type ReferenceType { get; }
 
-		// ReSharper disable once MemberCanBePrivate.Global
-		[SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
+		// ReSharper disable MemberCanBePrivate.Global
 		protected const string MAP_SCHEME = "map";
-
-		// ReSharper disable once MemberCanBePrivate.Global
-		[SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 		protected const string RESOURCE_HOST = "resource";
-
-		// ReSharper disable once MemberCanBePrivate.Global
-		[SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
 		protected const string TYPE_HOST = "type";
+		// ReSharper restore MemberCanBePrivate.Global
 	}
 }
