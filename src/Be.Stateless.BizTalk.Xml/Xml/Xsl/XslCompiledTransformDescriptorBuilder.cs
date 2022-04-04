@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 
-// Copyright © 2012 - 2021 François Chabot
+// Copyright © 2012 - 2022 François Chabot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -73,7 +73,11 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 		public virtual XslCompiledTransform BuildXslCompiledTransform()
 		{
 			var xslCompiledTransform = new XslCompiledTransform();
-			xslCompiledTransform.Load(_navigator, XsltSettings.TrustedXslt, new XslMapUrlResolver(Transform));
+			// don't reuse _navigator to avoid XmlSpace issue when loading XSLT thru XPathDocument's navigator should there be space entities (e.g. CR or LF)
+			using (var xmlReader = XmlReader.Create(new StringReader(_transformBase.XmlContent), new() { XmlResolver = null }))
+			{
+				xslCompiledTransform.Load(xmlReader, XsltSettings.TrustedXslt, new XslMapUrlResolver(Transform));
+			}
 			return xslCompiledTransform;
 		}
 
@@ -84,9 +88,9 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 
 		private XPathNavigator BuildNavigator()
 		{
-			using (var stringReader = XmlReader.Create(new StringReader(_transformBase.XmlContent), new() { XmlResolver = null }))
+			using (var xmlReader = XmlReader.Create(new StringReader(_transformBase.XmlContent), new() { XmlResolver = null }))
 			{
-				var navigator = new XPathDocument(stringReader).CreateNavigator();
+				var navigator = new XPathDocument(xmlReader, XmlSpace.Default).CreateNavigator();
 				navigator.MoveToFollowing(XPathNodeType.Element);
 				return navigator;
 			}

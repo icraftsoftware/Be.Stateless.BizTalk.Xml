@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 
-// Copyright © 2012 - 2020 François Chabot
+// Copyright © 2012 - 2022 François Chabot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -43,5 +43,18 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 		/// </remarks>
 		/// <seealso cref="ExtensionObjectNamespaces.MessageContext"/>
 		MessageContext = 1
+	}
+
+	public static class ExtensionRequirementsExtensions
+	{
+		public static bool RequireNone(this ExtensionRequirements extensionRequirements)
+		{
+			return extensionRequirements == ExtensionRequirements.None;
+		}
+
+		public static bool RequireMessageContext(this ExtensionRequirements extensionRequirements)
+		{
+			return (extensionRequirements & ExtensionRequirements.MessageContext) == ExtensionRequirements.MessageContext;
+		}
 	}
 }

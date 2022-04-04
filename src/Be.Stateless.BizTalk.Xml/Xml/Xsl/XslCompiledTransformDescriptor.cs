@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 
-// Copyright © 2012 - 2020 François Chabot
+// Copyright © 2012 - 2022 François Chabot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -43,11 +43,8 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 			if (builder == null) throw new ArgumentNullException(nameof(builder));
 			Arguments = builder.BuildXsltArgumentList();
 			ExtensionRequirements = builder.BuildExtensionRequirements();
-			if ((ExtensionRequirements & ExtensionRequirements.MessageContext) == ExtensionRequirements.MessageContext)
-			{
-				NamespaceResolver = builder.BuildNamespaceResolver();
-			}
-			XslCompiledTransform = builder.BuildXslCompiledTransform();
+			if (ExtensionRequirements.RequireMessageContext()) NamespaceResolver = builder.BuildNamespaceResolver();
+			CompiledXslt = builder.BuildXslCompiledTransform();
 		}
 
 		/// <summary>
@@ -59,6 +56,11 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 		/// cref="XslCompiledTransformDescriptor"/> not to keep a reference on a <see cref="TransformBase"/> instance.
 		/// </remarks>
 		public Stateless.Xml.Xsl.XsltArgumentList Arguments { get; }
+
+		/// <summary>
+		/// The <see cref="System.Xml.Xsl.XslCompiledTransform"/> equivalent of <see cref="TransformBase"/>-derived transform.
+		/// </summary>
+		public XslCompiledTransform CompiledXslt { get; }
 
 		/// <summary>
 		/// Requirements of a <see cref="XslCompiledTransform"/> in terms of extension objects.
@@ -80,6 +82,7 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 		/// <summary>
 		/// The <see cref="System.Xml.Xsl.XslCompiledTransform"/> equivalent of <see cref="TransformBase"/>-derived transform.
 		/// </summary>
-		public XslCompiledTransform XslCompiledTransform { get; }
+		[Obsolete("Use " + nameof(CompiledXslt) + " property instead.")]
+		public XslCompiledTransform XslCompiledTransform => CompiledXslt;
 	}
 }

@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 
-// Copyright © 2012 - 2021 François Chabot
+// Copyright © 2012 - 2022 François Chabot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -124,7 +124,7 @@ namespace Be.Stateless.BizTalk.Xml
 				var builder = new StringBuilder();
 				using (var writer = XmlWriter.Create(builder))
 				{
-					xslTransformDescriptor.XslCompiledTransform.Transform(composite, xslTransformDescriptor.Arguments, writer!);
+					xslTransformDescriptor.CompiledXslt.Transform(composite, xslTransformDescriptor.Arguments, writer!);
 				}
 				builder.GetReaderAtContent().ReadOuterXml().Should().Be(EXPECTED);
 			}
@@ -142,7 +142,7 @@ namespace Be.Stateless.BizTalk.Xml
 				var builder = new StringBuilder();
 				using (var writer = XmlWriter.Create(builder))
 				{
-					xslTransformDescriptor.XslCompiledTransform.Transform(composite, xslTransformDescriptor.Arguments, writer!);
+					xslTransformDescriptor.CompiledXslt.Transform(composite, xslTransformDescriptor.Arguments, writer!);
 				}
 				builder.GetReaderAtContent().ReadOuterXml().Should().Be(EXPECTED);
 			}
