@@ -66,7 +66,7 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 			var sut = new XslCompiledTransformDescriptor(new(typeof(CompoundContextMapTransform)));
 			var namespaceResolver = sut.NamespaceResolver;
 
-			((IEnumerable) namespaceResolver).Cast<string>().Should().BeEquivalentTo(string.Empty, "xmlns", "xml", "xs", "xsi", "xsl", "bf", "bts", "ctxt");
+			((IEnumerable) namespaceResolver).Cast<string>().Should().BeEquivalentTo(string.Empty, "xmlns", "xml", "xs", "xsi", "xsl", "bf", "bts", "ctx");
 			namespaceResolver.LookupNamespace(string.Empty).Should().Be(string.Empty);
 			namespaceResolver.LookupNamespace("xmlns").Should().Be(XNamespace.Xmlns.NamespaceName);
 			namespaceResolver.LookupNamespace("xml").Should().Be(XNamespace.Xml.NamespaceName);
@@ -75,7 +75,7 @@ namespace Be.Stateless.BizTalk.Xml.Xsl
 			namespaceResolver.LookupNamespace("xsl").Should().Be("http://www.w3.org/1999/XSL/Transform");
 			namespaceResolver.LookupNamespace("bf").Should().Be(BizTalkFactoryProperties.ContextBuilderTypeName.Namespace);
 			namespaceResolver.LookupNamespace("bts").Should().Be(BtsProperties.ActualRetryCount.Namespace);
-			namespaceResolver.LookupNamespace("ctxt").Should().Be("urn:extensions.stateless.be:biztalk:message:context:2012:12");
+			namespaceResolver.LookupNamespace("ctx").Should().Be("urn:extensions.stateless.be:biztalk:message:context:2012:12");
 			namespaceResolver.LookupNamespace("tp").Should().BeNull();
 		}
 

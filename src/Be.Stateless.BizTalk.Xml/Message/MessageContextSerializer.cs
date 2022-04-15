@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 
-// Copyright © 2012 - 2021 François Chabot
+// Copyright © 2012 - 2022 François Chabot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -22,9 +22,11 @@ using System.Globalization;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 using Be.Stateless.BizTalk.ContextProperties;
+using Be.Stateless.Extensions;
 using WCF;
 
 namespace Be.Stateless.BizTalk.Message
@@ -44,9 +46,16 @@ namespace Be.Stateless.BizTalk.Message
 			// ... and declare/alias all of them at the root element level to minimize xml string size
 			for (var i = 0; nsCache.TryLookup(i, out var xds); i++)
 			{
-				xmlDocument.Add(new XAttribute(XNamespace.Xmlns + "s" + xds.Key.ToString(CultureInfo.InvariantCulture), xds.Value));
+				if (!xds.Value.IsNullOrEmpty()) xmlDocument.Add(new XAttribute(XNamespace.Xmlns + "s" + xds.Key.ToString(CultureInfo.InvariantCulture), xds.Value));
 			}
-			return xmlDocument.ToString(SaveOptions.DisableFormatting);
+
+			// take control of serialization in order to output invalid XML characters such as 0x1A under their encoded entity form
+			var builder = new StringBuilder(7 * 1024); // 7 KB is the average size of message contexts
+			using (var writer = XmlWriter.Create(builder, _xmlWriterSettings))
+			{
+				xmlDocument.WriteTo(writer);
+			}
+			return builder.ToString();
 		}
 
 		[MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -91,5 +100,11 @@ namespace Be.Stateless.BizTalk.Message
 						.Select(h => h.Trim())
 						.Where(h => !h.StartsWith(nameof(HttpRequestHeaders.Authorization), StringComparison.OrdinalIgnoreCase)));
 		}
+
+		private static readonly XmlWriterSettings _xmlWriterSettings = new() {
+			CheckCharacters = false, // allows to output equivalent entities for otherwise invalid XML characters
+			ConformanceLevel = ConformanceLevel.Fragment,
+			OmitXmlDeclaration = true
+		};
 	}
 }

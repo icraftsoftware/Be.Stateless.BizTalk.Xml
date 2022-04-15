@@ -1,6 +1,6 @@
 ﻿#region Copyright & License
 
-// Copyright © 2012 - 2020 François Chabot
+// Copyright © 2012 - 2022 François Chabot
 // 
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -16,7 +16,6 @@
 
 #endregion
 
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.XLANGs.BaseTypes;
 
 namespace Be.Stateless.BizTalk.Dummies.Transform
@@ -24,16 +23,15 @@ namespace Be.Stateless.BizTalk.Dummies.Transform
 	[SchemaReference("Microsoft.XLANGs.BaseTypes.Any", typeof(Any))]
 	internal sealed class CompoundContextMapTransform : TransformBase
 	{
-		[SuppressMessage("ReSharper", "StringLiteralTypo")]
 		static CompoundContextMapTransform()
 		{
 			_xmlContent = @"<xsl:stylesheet version='1.0' xmlns:xsl='http://www.w3.org/1999/XSL/Transform'
-	xmlns:ctxt='urn:extensions.stateless.be:biztalk:message:context:2012:12'
+	xmlns:ctx='urn:extensions.stateless.be:biztalk:message:context:2012:12'
 	xmlns:bf='urn:schemas.stateless.be:biztalk:properties:system:2012:04'
 	xmlns:bts='http://schemas.microsoft.com/BizTalk/2003/system-properties'
-	exclude-result-prefixes='ctxt bf bts'>
-	<xsl:variable name='environmentTag' select=""ctxt:Read('bf:EnvironmentTag')""/>
-	<xsl:variable name='operation' select=""ctxt:Read('bts:Operation')""/>
+	exclude-result-prefixes='ctx bf bts'>
+	<xsl:variable name='environmentTag' select=""ctx:Read('bf:EnvironmentTag')""/>
+	<xsl:variable name='operation' select=""ctx:Read('bts:Operation')""/>
 	<xsl:template match='one'><first><xsl:value-of select='text()'/></first></xsl:template>
 </xsl:stylesheet>";
 		}
